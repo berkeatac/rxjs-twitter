@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { merge } from 'rxjs'
 
-import { createTweetSource, Tweet } from './utils/data'
+import { createTweetSource, Tweet as TweetType } from 'utils/data'
+import Tweet from 'components/Tweet'
 
 const App = () => {
-  const [tweets, setTweets] = useState<Tweet[]>([])
+  const [tweets, setTweets] = useState<TweetType[]>([])
 
   useEffect(() => {
     const tweetStream = merge(
@@ -13,8 +14,8 @@ const App = () => {
       createTweetSource(5000, 'CommitStrip', 'Funny')
     )
 
-    const subscription = tweetStream.subscribe((newTweet: Tweet) => {
-      setTweets((prevTweets) => [...prevTweets, newTweet])
+    const subscription = tweetStream.subscribe((newTweet: TweetType) => {
+      setTweets((prevTweets) => [newTweet, ...prevTweets])
     })
 
     return () => {
@@ -23,19 +24,16 @@ const App = () => {
   }, [])
 
   return (
-    <div>
-      <h1>Tweets</h1>
-      <ul>
+    <main className="w-full">
+      <h1 className="mx-auto w-1/2 min-w-min max-w-md">Tweets</h1>
+      <ul className="mx-auto w-1/2 min-w-min max-w-md">
         {tweets
-          .filter((tweet: Tweet) => Date.now() - tweet.timestamp <= 30000)
+          .filter((tweet: TweetType) => Date.now() - tweet.timestamp <= 30000)
           .map((tweet, index) => (
-            <li key={index}>
-              <strong>{tweet.account}</strong>: {tweet.content}{' '}
-              <small>({new Date(tweet.timestamp).toLocaleString()})</small>
-            </li>
+            <Tweet key={`${tweet.account}-${index}`} {...tweet} />
           ))}
       </ul>
-    </div>
+    </main>
   )
 }
 
