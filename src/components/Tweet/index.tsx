@@ -5,7 +5,7 @@ interface TweetProps {
   content: string
   timestamp: number
   isLiked: boolean
-  handleLike: (id: string) => void
+  handleLike: (id: string, direction: 'up' | 'down') => void
   id: string
 }
 
@@ -22,7 +22,9 @@ const Tweet = ({
       <strong>{account}</strong>
       {content} {isLiked && '❤️'}
       <small>({new Date(timestamp).toLocaleString()})</small>
-      <button onClick={() => handleLike(id)}>Like</button>
+      <button onClick={() => handleLike(id, isLiked ? 'down' : 'up')}>
+        Like
+      </button>
     </li>
   )
 }
