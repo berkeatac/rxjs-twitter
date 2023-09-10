@@ -2,21 +2,21 @@ import { useCallback, useEffect, useReducer } from 'react'
 import { merge } from 'rxjs'
 import { v4 as uuid } from 'uuid'
 
-import {
-  createTweetSource,
-  Tweet as TweetStreamType,
-  // TweetDataType,
-  getTweetsInTimeWindow
-} from 'utils/data'
-import TweetList from 'components/TweetList'
+import { createTweetSource, getTweetsByFilter } from 'utils/data'
 import tweetsReducer from 'reducers/tweetsReducer'
+
+import TweetList from 'components/TweetList'
+import Filters from 'components/Filters'
+
+import { Tweet as TweetStreamType, Direction, FiltersEnum } from 'types'
 
 const App = () => {
   const [state, dispatch] = useReducer(tweetsReducer, {
     tweets: [],
-    likeCount: 0
+    likeCount: 0,
+    activeFilter: FiltersEnum.ALL
   })
-  const { tweets, likeCount } = state
+  const { tweets, likeCount, activeFilter } = state
 
   useEffect(() => {
     const tweetStream = merge(
@@ -37,17 +37,22 @@ const App = () => {
     }
   }, [])
 
-  const handleLike = useCallback((id: string, direction: 'up' | 'down') => {
+  const handleLike = useCallback((id: string, direction: Direction) => {
     dispatch({ type: 'TOGGLE_LIKE', payload: { id, direction } })
   }, [])
 
+  const handleFilterChange = useCallback((filter: FiltersEnum) => {
+    dispatch({ type: 'SET_FILTER', payload: filter })
+  }, [])
+
   return (
-    <main className="w-full">
-      <h1 className="mx-auto w-1/2 min-w-min max-w-md">Tweets</h1>
-      <h2 className="mx-auto w-1/2 min-w-min max-w-md">Liked: {likeCount}</h2>
-      <ul className="mx-auto w-1/2 min-w-min max-w-md">
+    <main className="mx-auto w-1/2 min-w-min max-w-md">
+      <h1 className="">Tweets</h1>
+      <h2 className="">Liked: {likeCount}</h2>
+      <Filters activeFilter={activeFilter} changeFilter={handleFilterChange} />
+      <ul className="">
         <TweetList
-          tweets={getTweetsInTimeWindow(tweets, 30000)}
+          tweets={getTweetsByFilter(tweets, activeFilter)}
           handleLike={handleLike}
         />
       </ul>

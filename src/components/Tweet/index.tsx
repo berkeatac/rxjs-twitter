@@ -1,11 +1,13 @@
 import React from 'react'
 
+import { Direction } from '../../types'
+
 interface TweetProps {
   account: string
   content: string
   timestamp: number
   isLiked: boolean
-  handleLike: (id: string, direction: 'up' | 'down') => void
+  handleLike: (id: string, direction: Direction) => void
   id: string
 }
 
@@ -22,7 +24,9 @@ const Tweet = ({
       <strong>{account}</strong>
       {content} {isLiked && '❤️'}
       <small>({new Date(timestamp).toLocaleString()})</small>
-      <button onClick={() => handleLike(id, isLiked ? 'down' : 'up')}>
+      <button
+        onClick={() => handleLike(id, isLiked ? Direction.DOWN : Direction.UP)}
+      >
         Like
       </button>
     </li>

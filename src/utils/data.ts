@@ -1,13 +1,6 @@
 import { interval } from 'rxjs'
 import { map } from 'rxjs/operators'
-
-export type Tweet = {
-  account: string
-  timestamp: number
-  content: string
-}
-
-export type TweetDataType = Tweet & { isLiked: boolean; id: string }
+import { TweetDataType, FiltersEnum } from '../types'
 
 export const createTweetSource = (
   frequency: number,
@@ -35,4 +28,18 @@ export const getTweetsInTimeWindow = (
     tweet.timestamp >= start && result.push(tweet)
   })
   return result
+}
+
+export const getTweetsByFilter = (
+  tweets: TweetDataType[],
+  filter: FiltersEnum
+): TweetDataType[] => {
+  switch (filter) {
+    case FiltersEnum.ALL:
+      return getTweetsInTimeWindow(tweets, 30 * 1000)
+    case FiltersEnum.LIKED:
+      return tweets.filter((tweet) => tweet.isLiked)
+    default:
+      return tweets
+  }
 }

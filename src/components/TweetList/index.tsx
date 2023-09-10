@@ -1,11 +1,12 @@
 import React from 'react'
 
 import Tweet from '../Tweet'
-import { TweetDataType } from '../../utils/data'
+
+import { TweetDataType, Direction } from '../../types'
 
 interface TweetListProps {
   tweets: TweetDataType[]
-  handleLike: (id: string, direction: 'up' | 'down') => void
+  handleLike: (id: string, direction: Direction) => void
 }
 
 const TweetList = ({ tweets, handleLike }: TweetListProps) => {
