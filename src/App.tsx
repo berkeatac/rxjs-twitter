@@ -1,11 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { merge } from 'rxjs'
+import { v4 as uuid } from 'uuid'
 
-import { createTweetSource, Tweet as TweetType } from 'utils/data'
-import Tweet from 'components/Tweet'
+import {
+  createTweetSource,
+  Tweet as TweetStreamType,
+  TweetDataType
+} from 'utils/data'
+import TweetList from 'components/TweetList'
 
 const App = () => {
-  const [tweets, setTweets] = useState<TweetType[]>([])
+  const [tweets, setTweets] = useState<TweetDataType[]>([])
 
   useEffect(() => {
     const tweetStream = merge(
@@ -14,8 +19,11 @@ const App = () => {
       createTweetSource(5000, 'CommitStrip', 'Funny')
     )
 
-    const subscription = tweetStream.subscribe((newTweet: TweetType) => {
-      setTweets((prevTweets) => [newTweet, ...prevTweets])
+    const subscription = tweetStream.subscribe((newTweet: TweetStreamType) => {
+      setTweets((prevTweets) => [
+        { ...newTweet, isLiked: false, id: uuid() },
+        ...prevTweets
+      ])
     })
 
     return () => {
@@ -23,15 +31,22 @@ const App = () => {
     }
   }, [])
 
+  const handleLike = useCallback((id: string) => {
+    setTweets((prevTweets) =>
+      prevTweets.map((tweet) => {
+        if (tweet.id === id) {
+          return { ...tweet, isLiked: !tweet.isLiked }
+        }
+        return tweet
+      })
+    )
+  }, [])
+
   return (
     <main className="w-full">
       <h1 className="mx-auto w-1/2 min-w-min max-w-md">Tweets</h1>
       <ul className="mx-auto w-1/2 min-w-min max-w-md">
-        {tweets
-          .filter((tweet: TweetType) => Date.now() - tweet.timestamp <= 30000)
-          .map((tweet, index) => (
-            <Tweet key={`${tweet.account}-${index}`} {...tweet} />
-          ))}
+        <TweetList tweets={tweets} handleLike={handleLike} />
       </ul>
     </main>
   )

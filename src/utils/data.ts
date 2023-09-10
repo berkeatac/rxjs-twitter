@@ -7,6 +7,8 @@ export type Tweet = {
   content: string
 }
 
+export type TweetDataType = Tweet & { isLiked: boolean; id: string }
+
 export const createTweetSource = (
   frequency: number,
   account: string,
