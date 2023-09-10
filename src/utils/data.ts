@@ -22,3 +22,17 @@ export const createTweetSource = (
     }))
   )
 }
+
+// Returns tweets from the array, in the given time window
+// Handles the operation efficiently, stopping the search when the first tweet outside the time window is found
+export const getTweetsInTimeWindow = (
+  tweets: TweetDataType[],
+  timeWindow: number
+) => {
+  const result: TweetDataType[] = []
+  const start = Date.now() - timeWindow
+  tweets.some((tweet) => {
+    tweet.timestamp >= start && result.push(tweet)
+  })
+  return result
+}
