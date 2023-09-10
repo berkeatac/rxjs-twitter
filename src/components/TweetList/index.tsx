@@ -6,14 +6,14 @@ import { TweetDataType, Direction } from '../../types'
 
 interface TweetListProps {
   tweets: TweetDataType[]
-  handleLike: (id: string, direction: Direction) => void
+  handleLikeEvent: (id: string, direction: Direction) => void
 }
 
-const TweetList = ({ tweets, handleLike }: TweetListProps) => {
+const TweetList = ({ tweets, handleLikeEvent }: TweetListProps) => {
   return (
     <>
       {tweets.map((tweet: TweetDataType) => (
-        <Tweet key={tweet.id} handleLike={handleLike} {...tweet} />
+        <Tweet key={tweet.id} handleLikeEvent={handleLikeEvent} {...tweet} />
       ))}
     </>
   )

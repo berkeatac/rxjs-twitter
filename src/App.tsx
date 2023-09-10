@@ -37,7 +37,7 @@ const App = () => {
     }
   }, [])
 
-  const handleLike = useCallback((id: string, direction: Direction) => {
+  const handleLikeEvent = useCallback((id: string, direction: Direction) => {
     dispatch({ type: 'TOGGLE_LIKE', payload: { id, direction } })
   }, [])
 
@@ -59,7 +59,7 @@ const App = () => {
       <ul>
         <TweetList
           tweets={getTweetsByFilter(tweets, activeFilter)}
-          handleLike={handleLike}
+          handleLikeEvent={handleLikeEvent}
         />
       </ul>
     </main>
