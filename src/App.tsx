@@ -47,16 +47,16 @@ const App = () => {
 
   return (
     <main className="mx-auto w-1/2 min-w-min max-w-md">
-      <h1 className="">Tweets</h1>
-      <h2 className="">Liked: {likeCount}</h2>
+      <h1 className="text-lg font-bold">Tweets</h1>
+      <h2 className="mb-2 mt-3">Liked: {likeCount}</h2>
       <Filters activeFilter={activeFilter} changeFilter={handleFilterChange} />
       <button
-        className="rounded border border-blue-500 bg-transparent px-2 py-1 font-semibold text-blue-700 hover:border-transparent hover:bg-blue-500 hover:text-white"
+        className="mb-2 rounded border border-blue-500 bg-transparent px-2 py-1 font-semibold text-blue-700 hover:border-transparent hover:bg-blue-500 hover:text-white"
         onClick={() => dispatch({ type: 'CLEAR_TWEETS' })}
       >
-        Clear
+        Clear All Tweets
       </button>
-      <ul className="">
+      <ul>
         <TweetList
           tweets={getTweetsByFilter(tweets, activeFilter)}
           handleLike={handleLike}

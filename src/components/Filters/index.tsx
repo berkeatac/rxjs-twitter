@@ -9,30 +9,32 @@ interface FiltersProps {
 
 const Filters = ({ activeFilter, changeFilter }: FiltersProps) => {
   return (
-    <fieldset className="flex flex-row">
+    <fieldset className="mb-2 flex flex-row">
       <legend>Filters:</legend>
 
-      <div className="mr-2">
-        <input
-          type="radio"
-          id="all"
-          name="filter"
-          checked={activeFilter === FiltersEnum.ALL}
-          onChange={() => changeFilter(FiltersEnum.ALL)}
-        />
-        <label htmlFor="all">All</label>
-      </div>
+      <input
+        type="radio"
+        id="all"
+        name="filter"
+        className="mr-1"
+        checked={activeFilter === FiltersEnum.ALL}
+        onChange={() => changeFilter(FiltersEnum.ALL)}
+      />
+      <label htmlFor="all" className="mr-4">
+        All
+      </label>
 
-      <div className="mx-2">
-        <input
-          type="radio"
-          id="liked"
-          name="filter"
-          checked={activeFilter === FiltersEnum.LIKED}
-          onChange={() => changeFilter(FiltersEnum.LIKED)}
-        />
-        <label htmlFor="liked">Liked</label>
-      </div>
+      <input
+        type="radio"
+        id="liked"
+        name="filter"
+        className="mr-1"
+        checked={activeFilter === FiltersEnum.LIKED}
+        onChange={() => changeFilter(FiltersEnum.LIKED)}
+      />
+      <label htmlFor="liked" className="mr-4">
+        Liked
+      </label>
     </fieldset>
   )
 }
