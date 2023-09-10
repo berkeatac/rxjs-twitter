@@ -13,6 +13,9 @@ type Action =
       type: 'SET_FILTER'
       payload: FiltersEnum
     }
+  | {
+      type: 'CLEAR_TWEETS'
+    }
 
 const tweetReducer = (
   state: {
@@ -51,6 +54,12 @@ const tweetReducer = (
         tweets: state.tweets,
         likeCount: state.likeCount,
         activeFilter: action.payload
+      }
+    case 'CLEAR_TWEETS':
+      return {
+        tweets: [],
+        likeCount: 0,
+        activeFilter: state.activeFilter
       }
     default:
       break

@@ -50,6 +50,12 @@ const App = () => {
       <h1 className="">Tweets</h1>
       <h2 className="">Liked: {likeCount}</h2>
       <Filters activeFilter={activeFilter} changeFilter={handleFilterChange} />
+      <button
+        className="rounded border border-blue-500 bg-transparent px-2 py-1 font-semibold text-blue-700 hover:border-transparent hover:bg-blue-500 hover:text-white"
+        onClick={() => dispatch({ type: 'CLEAR_TWEETS' })}
+      >
+        Clear
+      </button>
       <ul className="">
         <TweetList
           tweets={getTweetsByFilter(tweets, activeFilter)}
